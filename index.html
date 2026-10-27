@@ -58,7 +58,64 @@ $('exportBtn').addEventListener('click',()=>{const cols=['id','name','dateReceiv
 $('importBtn').addEventListener('click',()=>$('fileInput').click());
 function parseCSV(text){const rows=[];let row=[],cell='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){cell+='"';i++}else if(c==='"')quoted=false;else cell+=c}else if(c==='"'){if(cell.length)throw Error('Malformed CSV: quote inside an unquoted field.');quoted=true}else if(c===','){row.push(cell);cell=''}else if(c==='\n'){row.push(cell.replace(/\r$/,''));rows.push(row);row=[];cell=''}else cell+=c}if(quoted)throw Error('Malformed CSV: an opening quote was never closed.');if(cell.length||row.length){row.push(cell.replace(/\r$/,''));rows.push(row)}return rows}
 function validDate(v){if(!v)return true;if(!/^\d{4}-\d{2}-\d{2}$/.test(v))return false;const d=new Date(v+'T00:00:00');return !Number.isNaN(d.getTime())&&d.toISOString().slice(0,10)===v}
-$('fileInput').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{const rows=parseCSV((await file.text()).replace(/^\uFEFF/,''));if(rows.length<2)throw Error('CSV has no data rows.');const headers=rows.shift().map(h=>h.trim().toLowerCase());if(!headers.some(h=>['name','customer_name','lead_name'].includes(h)))throw Error('CSV needs a name, customer_name, or lead_name column.');const imported=rows.filter(r=>r.some(v=>v.trim()!=='')).map((r,i)=>{const o={};headers.forEach((h,j)=>o[h]=r[j]??'');const name=(o.name||o.customer_name||o.lead_name||'').trim();if(!name)throw Error('Every non-empty row must have a lead name. Check row '+(i+2)+'.');const status=(o.status||'New').trim();const nextDate=(o.nextdate||o.next_follow_up_date||'').trim();const dateReceived=(o.datereceived||o.date_received||'').trim();const lastContactDate=(o.lastcontactdate||o.last_contact_date||'').trim();if(!validDate(nextDate)||!validDate(dateReceived)||!validDate(lastContactDate))throw Error('Invalid date in row '+(i+2)+'. Use YYYY-MM-DD.');return {id:(o.id||o.lead_id||'import-'+Date.now().toString(36)+'-'+i).trim(),name,dateReceived,owner:(o.owner||'').trim(),lastContactDate,channel:(o.channel||o.contact_channel||'Other').trim(),service:(o.service||o.service_requested||'').trim(),status:['New','Contacted','Pending','Booked','Closed-Won','Closed-Lost'].includes(status)?status:'New',nextDate,notes:(o.notes||o.outcome_notes||'').trim(),createdAt:o.createdat||new Date().toISOString(),updatedAt:new Date().toISOString()}});if(!imported.length)throw Error('CSV has no usable data rows.');if(!confirm('Import '+imported.length+' records? Existing records will be kept.'))return;leads.push(...imported);save();alert('Imported '+imported.length+' records into this browser.')}catch(err){alert('Import failed: '+err.message)}finally{e.target.value=''}});
+$('fileInput').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const rows = parseCSV((await file.text()).replace(/^\uFEFF/, ''));
+    if (rows.length < 2) throw Error('CSV has no data rows.');
+    const headers = rows.shift().map(h => h.trim().toLowerCase());
+    if (!headers.some(h => ['name', 'customer_name', 'lead_name'].includes(h))) {
+      throw Error('CSV needs a name, customer_name, or lead_name column.');
+    }
+    const usedIds = new Set(leads.map(l => String(l.id)));
+    const imported = [];
+    let skippedDuplicates = 0;
+    const dataRows = rows.filter(r => r.some(v => v.trim() !== ''));
+    dataRows.forEach((r, i) => {
+      const o = {};
+      headers.forEach((h, j) => o[h] = r[j] ?? '');
+      const name = (o.name || o.customer_name || o.lead_name || '').trim();
+      if (!name) throw Error('Every non-empty row must have a lead name. Check row ' + (i + 2) + '.');
+      const status = (o.status || 'New').trim();
+      const nextDate = (o.nextdate || o.next_follow_up_date || '').trim();
+      const dateReceived = (o.datereceived || o.date_received || '').trim();
+      const lastContactDate = (o.lastcontactdate || o.last_contact_date || '').trim();
+      if (!validDate(nextDate) || !validDate(dateReceived) || !validDate(lastContactDate)) {
+        throw Error('Invalid date in row ' + (i + 2) + '. Use YYYY-MM-DD.');
+      }
+      const suppliedId = (o.id || o.lead_id || '').trim();
+      if (suppliedId && usedIds.has(suppliedId)) {
+        skippedDuplicates++;
+        return;
+      }
+      let id = suppliedId || ('import-' + Date.now().toString(36) + '-' + i);
+      while (usedIds.has(id)) id = 'import-' + Date.now().toString(36) + '-' + i + '-' + Math.random().toString(36).slice(2, 6);
+      usedIds.add(id);
+      imported.push({
+        id, name, dateReceived, owner: (o.owner || '').trim(), lastContactDate,
+        channel: (o.channel || o.contact_channel || 'Other').trim(),
+        service: (o.service || o.service_requested || '').trim(),
+        status: ['New', 'Contacted', 'Pending', 'Booked', 'Closed-Won', 'Closed-Lost'].includes(status) ? status : 'New',
+        nextDate, notes: (o.notes || o.outcome_notes || '').trim(),
+        createdAt: o.createdat || new Date().toISOString(),
+        updatedAt: o.updatedat || new Date().toISOString()
+      });
+    });
+    if (!imported.length) {
+      alert(skippedDuplicates ? 'No new records imported. Skipped ' + skippedDuplicates + ' duplicate lead ID(s).' : 'No usable data rows found.');
+      return;
+    }
+    if (!confirm('Import ' + imported.length + ' records? Existing records will be kept.' + (skippedDuplicates ? '\n' + skippedDuplicates + ' duplicate lead ID(s) will be skipped.' : ''))) return;
+    leads.push(...imported);
+    save();
+    alert('Imported ' + imported.length + ' records.' + (skippedDuplicates ? ' Skipped ' + skippedDuplicates + ' duplicate lead ID(s).' : ''));
+  } catch (err) {
+    alert('Import failed: ' + err.message);
+  } finally {
+    e.target.value = '';
+  }
+});
 load();render();
 })();
 </script>
