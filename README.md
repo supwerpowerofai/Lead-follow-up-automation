@@ -5,7 +5,7 @@ A lightweight, low-cost system to help local service businesses track enquiries,
 **Built by OPERONIX AI**  
 *Automate the Work. Accelerate the Growth.*
 
-> **Project status:** Documentation and sample assets. This repository does not yet contain a deployed or live automation. The sample data is fictional. Any live workflow must be configured and tested with the business before being represented as operational.
+> **Project status:** Early open-source prototype. The browser tracker is a local, dependency-free app; it is not a deployed cloud service or live messaging automation. Sample data is fictional. Browser behavior and CSV flows still need manual testing before relying on the tool for real operations.
 
 ## The problem
 
@@ -21,7 +21,15 @@ Enquiries arrive through calls, website forms, WhatsApp, social media, and refer
 
 The initial version is intentionally human-in-the-loop. It does not send messages automatically or connect to customer accounts.
 
+## Try the browser prototype
+
+Open [`index.html`](index.html) in a modern browser. No build step or third-party dependencies are required. Add fictional leads, edit statuses and follow-up dates, filter due/overdue items, and import/export CSV. Data is stored in this browser's local storage; it is not synced to other devices. Export a backup before clearing browser data. Do not use this public repository to store private customer records.
+
 ## Repository contents
+
+- [`index.html`](index.html) — local browser tracker prototype.
+- [`LICENSE`](LICENSE) — MIT License.
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — contribution and testing guidelines.
 
 - [docs/workflow.md](docs/workflow.md) — proposed operating workflow and data fields.
 - [docs/follow-up-templates.md](docs/follow-up-templates.md) — editable message templates.
@@ -55,9 +63,9 @@ The initial version is intentionally human-in-the-loop. It does not send message
 - Respect opt-outs and do not send repeated or misleading messages.
 - Keep human approval in the loop until automation is explicitly configured and tested.
 
-## What is not claimed
+## Limitations and what is not claimed
 
-This repository is a documented prototype, not proof of a deployed integration. No live Make, n8n, Zapier, WhatsApp, email, or CRM connection is claimed here. Implementation and results must be verified with a specific business.
+This is an early prototype, not proof of a deployed business integration. No live Make, n8n, Zapier, WhatsApp, email, or CRM connection is included. The app has not been independently audited or manually tested across browsers yet. Implementation and results must be verified before using it with a business.
 
 ## Service concept
 
