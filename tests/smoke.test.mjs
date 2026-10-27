@@ -53,3 +53,72 @@ test('CSV parser rejects an unclosed quote', () => {
   vm.runInNewContext(source + '\nglobalThis.__test = { parseCSV };', context);
   assert.throws(() => context.__test.parseCSV('name,notes\nAlice,"unfinished'), /never closed/);
 });
+
+
+function createBrowserHarness({ failStorage = false } = {}) {
+  const elements = new Map();
+  const records = new Map();
+  const alerts = [];
+  const blobs = [];
+  function getElementById(id) {
+    if (!elements.has(id)) {
+      elements.set(id, {
+        id, value: '', textContent: '', innerHTML: '', hidden: false, files: [],
+        listeners: {}, dataset: {},
+        addEventListener(type, fn) { this.listeners[type] = fn; },
+        reset() {},
+        click() {},
+        focus() {}
+      });
+    }
+    return elements.get(id);
+  }
+  const document = {
+    getElementById,
+    createElement: tag => ({ tag, click() { this.clicked = true; } })
+  };
+  const localStorage = {
+    getItem: key => records.get(key) || null,
+    setItem: (key, value) => {
+      if (failStorage) throw new Error('storage quota');
+      records.set(key, value);
+    }
+  };
+  class MockBlob {
+    constructor(parts, options) { this.parts = parts; this.type = options?.type; blobs.push(this); }
+  }
+  const URLMock = { createObjectURL: () => 'blob:test', revokeObjectURL() {} };
+  const script = html.match(/<script>([\s\S]*?)<\/script>/i)[1];
+  vm.runInNewContext(script, {
+    document, localStorage, Blob: MockBlob, URL: URLMock,
+    confirm: () => true, alert: message => alerts.push(message),
+    setTimeout: callback => callback(), Date, Math
+  });
+  return { elements, getElementById, records, alerts, blobs };
+}
+
+test('sample CSV imports once, duplicate IDs are skipped, and export preserves metadata', async () => {
+  const app = createBrowserHarness();
+  const input = app.getElementById('fileInput');
+  const importSample = async () => {
+    const target = { files: [{ text: async () => sample }], value: '' };
+    await input.listeners.change({ target });
+  };
+  await importSample();
+  assert.equal((app.getElementById('leadRows').innerHTML.match(/<tr>/g) || []).length, 5);
+  await importSample();
+  assert.equal((app.getElementById('leadRows').innerHTML.match(/<tr>/g) || []).length, 5);
+  assert.match(app.alerts.at(-1), /Skipped 5 duplicate/);
+  app.getElementById('exportBtn').listeners.click();
+  const exported = app.blobs.at(-1).parts.join('');
+  for (const value of ['DEMO-001', 'DEMO-005', 'Demo Owner', '2026-10-02', 'dateReceived', 'lastContactDate']) {
+    assert.ok(exported.includes(value), 'export missing ' + value);
+  }
+});
+
+test('browser storage failures are reported instead of crashing the app', () => {
+  const app = createBrowserHarness({ failStorage: true });
+  app.getElementById('name').value = 'Fictional Test Lead';
+  assert.doesNotThrow(() => app.getElementById('leadForm').listeners.submit({ preventDefault() {} }));
+  assert.ok(app.alerts.some(message => /storage is unavailable or full/i.test(message)));
+});
