@@ -1,72 +1,76 @@
-# Lead Follow-Up System for Local Service Businesses
+# Lead Follow-Up Tracker
 
-A lightweight, low-cost system to help local service businesses track enquiries, follow up consistently, and reduce the chance of leads being forgotten.
+A lightweight, browser-only lead tracker for small service businesses. Record enquiries, set a next action, and review due or overdue follow-ups without installing dependencies or sending customer messages automatically.
 
-**Built by OPERONIX AI**  
-*Automate the Work. Accelerate the Growth.*
+**Project:** OPERONIX AI  
+**Status:** Early prototype — use fictional data until you have tested the app and reviewed your privacy requirements.
 
-> **Project status:** Early open-source prototype. The browser tracker is a local, dependency-free app; it is not a deployed cloud service or live messaging automation. Sample data is fictional. Browser behavior and CSV flows still need manual testing before relying on the tool for real operations.
+## What it does today
 
-## The problem
+- Add, edit, and delete lead records.
+- Track lead status, enquiry channel, service, owner, date received, last contact, next follow-up, and notes.
+- Search leads and filter by status, due today, overdue, or missing next action.
+- See open, due-today, overdue, and booked counts.
+- Import and export CSV files.
+- Keep records in the current browser profile using local storage.
 
-Enquiries arrive through calls, website forms, WhatsApp, social media, and referrals. When follow-up depends on memory, opportunities can be missed.
+## What it does not do
 
-## The proposed solution
-
-1. Record each enquiry in one simple lead tracker.
-2. Assign a clear status and next follow-up date.
-3. Use reusable, respectful follow-up messages.
-4. Review overdue and pending leads daily.
-5. Track outcomes so the owner can see what needs attention.
-
-The initial version is intentionally human-in-the-loop. It does not send messages automatically or connect to customer accounts.
-
-## Try the browser prototype
-
-Open [`index.html`](index.html) in a modern browser. No build step or third-party dependencies are required. Add fictional leads, edit statuses and follow-up dates, filter due/overdue items, and import/export CSV. Data is stored in this browser's local storage; it is not synced to other devices. Export a backup before clearing browser data. Do not use this public repository to store private customer records.
-
-## Repository contents
-
-- [`index.html`](index.html) — local browser tracker prototype.
-- [`LICENSE`](LICENSE) — MIT License.
-- [`CONTRIBUTING.md`](CONTRIBUTING.md) — contribution and testing guidelines.
-
-- [docs/workflow.md](docs/workflow.md) — proposed operating workflow and data fields.
-- [docs/follow-up-templates.md](docs/follow-up-templates.md) — editable message templates.
-- [docs/test-cases.md](docs/test-cases.md) — checks to complete before a pilot.
-- [docs/pilot-offer.md](docs/pilot-offer.md) — clear scope for a small paid pilot.
-- [sample-leads.csv](sample-leads.csv) — fictional sample records for testing.
+- No server, accounts, cloud sync, or multi-device access.
+- No automatic WhatsApp, SMS, email, or CRM integrations.
+- No AI-generated or automatically sent customer messages.
+- No guarantee that a lead converts or that a follow-up improves revenue.
 
 ## Quick start
 
-1. Copy the sample CSV into a spreadsheet.
-2. Replace the fictional rows with authorised business data only when the owner approves.
-3. Add a next-action date for each open lead.
-4. Review the sheet daily and record each follow-up outcome.
-5. Run the test cases before using the workflow with real enquiries.
+1. Open [index.html](index.html) in a current desktop or mobile browser.
+2. Select **Load demo data** to explore with fictional records, or add a test lead manually.
+3. To import the included examples, select **Import CSV** and choose [sample-leads.csv](sample-leads.csv). Review the import confirmation before proceeding.
+4. Add a next follow-up date to open leads and use the due-date filters for a daily review.
+5. Select **Export CSV** to save a backup before clearing browser data or changing devices.
 
-## Suggested lead statuses
+No package manager, build step, API key, or third-party service is required. The app has no network backend. Data is stored only in that browser profile and is not synced. Exported CSV files are unencrypted; store them carefully.
 
-- **New** — enquiry received; not yet contacted.
-- **Contacted** — first response made; awaiting reply or next step.
-- **Booked** — appointment or service booked.
-- **Pending** — follow-up or customer decision is still due.
-- **Closed-Won** — business confirmed the sale or job.
-- **Closed-Lost** — lead did not proceed; record a reason if appropriate.
+## CSV format
 
-## Privacy and safety
+The importer accepts common field names such as `name` or `customer_name`, `channel` or `contact_channel`, `service` or `service_requested`, `nextDate` or `next_follow_up_date`, and `notes` or `outcome_notes`. Dates should use `YYYY-MM-DD`. The sample file uses fictional rows.
 
-- Do not commit API keys, passwords, access tokens, or private customer information.
-- Use fictional records in this public repository.
-- Get the business owner's permission before processing customer data.
-- Follow applicable privacy rules and each messaging platform's policies.
-- Respect opt-outs and do not send repeated or misleading messages.
-- Keep human approval in the loop until automation is explicitly configured and tested.
+If a CSV contains malformed quoting, missing names, or invalid dates, the app should display an import error instead of importing those rows.
 
-## Limitations and what is not claimed
+## Suggested daily workflow
 
-This is an early prototype, not proof of a deployed business integration. No live Make, n8n, Zapier, WhatsApp, email, or CRM connection is included. The app has not been independently audited or manually tested across browsers yet. Implementation and results must be verified before using it with a business.
+1. Capture each genuine enquiry once and assign an owner.
+2. Confirm the status and next action.
+3. Review due-today and overdue leads at the start of the day.
+4. Contact only people who have enquired or otherwise consented, using the business-approved channel and message.
+5. Record the outcome and next action; stop if someone opts out.
+6. Close a lead only when the outcome is known.
 
-## Service concept
+See [the workflow guide](docs/workflow.md), [follow-up templates](docs/follow-up-templates.md), and [pilot validation checklist](docs/test-cases.md).
 
-OPERONIX AI proposes small, fixed-scope lead follow-up pilots for local service businesses. The pilot scope, price, data access, and success criteria should be agreed in writing before work begins.
+## Development and checks
+
+The app is a single static HTML file. Automated smoke tests use Node.js 20 or newer:
+
+```bash
+node --test tests/smoke.test.mjs
+```
+
+GitHub Actions runs these checks on pushes and pull requests. A passing automated smoke test does **not** replace manual browser testing. The prototype still needs a real-browser check of import/export, local storage, keyboard use, and mobile layouts before being relied on for live operations.
+
+## Project status and roadmap
+
+See [ROADMAP.md](ROADMAP.md) for intended priorities and [docs/launch-checklist.md](docs/launch-checklist.md) for the release gate. Planned items are not promises or completed features.
+
+## Privacy and security
+
+- Do not commit real customer records, credentials, API keys, or tokens.
+- Get permission before handling business or customer data.
+- Avoid sensitive information in notes.
+- Remember that anyone with access to the same browser profile may be able to access locally stored records.
+- Respect consent, opt-outs, business hours, and platform rules.
+- Review [SECURITY.md](SECURITY.md) before reporting a security concern.
+
+## Contributing and license
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). This project is released under the [MIT License](LICENSE).
