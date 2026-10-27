@@ -1,0 +1,6 @@
+lead_id,date_received,customer_name,contact_channel,service_requested,status,last_contact_date,next_follow_up_date,owner,outcome_notes
+DEMO-001,2026-10-01,Demo Customer A,Website,AC service,New,,,Demo Owner,Example only; no real customer data
+DEMO-002,2026-10-02,Demo Customer B,Phone,Appliance repair,Contacted,2026-10-02,2026-10-29,Demo Owner,Example only; confirm availability before replying
+DEMO-003,2026-10-03,Demo Customer C,Referral,Plumbing service,Pending,2026-10-05,2026-10-28,Demo Owner,Example only; awaiting customer decision
+DEMO-004,2026-10-04,Demo Customer D,Website,Electrical service,Booked,2026-10-04,,Demo Owner,Example only; appointment confirmation must be verified
+DEMO-005,2026-10-05,Demo Customer E,Social media,Home cleaning,Closed-Lost,2026-10-06,,Demo Owner,Example only; no further follow-up planned
