@@ -60,7 +60,7 @@ GitHub Actions runs these checks on pushes and pull requests. A passing automate
 
 ## Project status and roadmap
 
-See [ROADMAP.md](ROADMAP.md) for intended priorities and [docs/launch-checklist.md](docs/launch-checklist.md) for the release gate. Planned items are not promises or completed features.
+See [ROADMAP.md](ROADMAP.md) for intended priorities, [docs/launch-checklist.md](docs/launch-checklist.md) for the release gate, and [docs/launch-post.md](docs/launch-post.md) for an announcement draft. Planned items are not promises or completed features.
 
 ## Privacy and security
 
