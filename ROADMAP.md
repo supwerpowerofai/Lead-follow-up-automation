@@ -14,7 +14,7 @@ This roadmap describes intended work, not completed features. Priorities may cha
 - [ ] Add duplicate detection and an explicit import preview.
 - [ ] Add clear handling for unavailable or full browser storage.
 - [ ] Add a visible backup/reminder workflow and clearer empty states.
-- [ ] Add automated regression checks for CSV edge cases.
+- [x] Add automated regression checks for CSV parsing, sample import, duplicate IDs, export, and storage failures.
 
 ## P2 — Validate before automation
 - [ ] Test the workflow with fictional records and an agreed pilot checklist.
