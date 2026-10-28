@@ -18,4 +18,4 @@ jobs:
         with:
           node-version: 20
       - name: Run smoke tests
-        run: node --test tests/smoke.test.mjs
+        run: node --test tests/*.test.mjs
