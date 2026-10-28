@@ -13,7 +13,7 @@ A privacy-first, dependency-free lead follow-up tracker for small service busine
 **Project:** OPERONIX AI  
 **Maturity:** Prototype / portfolio project — not production-certified
 
-[Open the repository](https://github.com/supwerpowerofai/Lead-follow-up-automation) · [Roadmap](ROADMAP.md) · [Workflow guide](docs/workflow.md) · [Architecture](docs/architecture.md) · [Test cases](docs/test-cases.md)
+[Open the repository](https://github.com/supwerpowerofai/Lead-follow-up-automation) · [Roadmap](ROADMAP.md) · [Workflow guide](docs/workflow.md) · [Architecture](docs/architecture.md) · [Test cases](docs/test-cases.md) · [Engineering quality bar](docs/engineering-quality.md)
 
 ## Why this exists
 
