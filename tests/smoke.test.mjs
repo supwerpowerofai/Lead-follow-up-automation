@@ -121,4 +121,5 @@ test('browser storage failures are reported instead of crashing the app', () => 
   app.getElementById('name').value = 'Fictional Test Lead';
   assert.doesNotThrow(() => app.getElementById('leadForm').listeners.submit({ preventDefault() {} }));
   assert.ok(app.alerts.some(message => /storage is unavailable or full/i.test(message)));
+  assert.match(app.getElementById('formMessage').textContent, /memory only; storage failed/i);
 });
