@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Turn a business problem into a structured AI implementation brief.">
+<title>PowerOfAI — Blueprint Studio | SUPERPOWER AI</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0c0f;--panel:#14161b;--line:#2c3038;--ink:#f4f1e8;--muted:#a5a8b1;--gold:#d8b65b;--soft:#242117;--ok:#b5d7bd}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#292316 0,transparent 34%),var(--bg);color:var(--ink);font:16px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}main{max-width:1080px;margin:auto;padding:32px 20px 64px}.brand{font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:800}.hero{padding:28px 0 22px}h1{font-size:clamp(2.2rem,6vw,4.5rem);line-height:1.02;letter-spacing:-.04em;margin:12px 0}h1 span{color:var(--gold)}.lede{max-width:680px;color:var(--muted);font-size:1.08rem}.pill{display:inline-block;border:1px solid #51462a;border-radius:999px;color:var(--gold);padding:4px 10px;font-size:.78rem;margin-top:8px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}.panel{background:rgba(20,22,27,.94);border:1px solid var(--line);border-radius:18px;padding:22px;min-width:0}.panel h2{margin:0 0 6px;font-size:1.15rem}.sub{color:var(--muted);font-size:.9rem;margin:0 0 18px}.field{display:grid;gap:7px;margin:14px 0}.field label{font-size:.9rem;font-weight:700}.field input,.field textarea,.field select{width:100%;background:#0e1014;color:var(--ink);border:1px solid #383c45;border-radius:10px;padding:12px;font:inherit}.field textarea{min-height:88px;resize:vertical}.field input:focus-visible,.field textarea:focus-visible,.field select:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}.btn{border:1px solid var(--gold);border-radius:10px;background:var(--gold);color:#17140c;font:inherit;font-weight:800;padding:12px 16px;cursor:pointer}.btn.secondary{background:transparent;color:var(--gold)}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.output{white-space:pre-wrap;overflow-wrap:anywhere;background:#0e1014;border:1px solid var(--line);border-radius:12px;padding:15px;min-height:250px;color:#e9e6dd;font: .91rem/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}.note{border-left:3px solid var(--gold);padding:10px 13px;background:var(--soft);color:#d7d0bc;font-size:.88rem;margin-top:16px}.status{min-height:1.4em;color:var(--ok);font-size:.9rem;margin-top:10px}footer{margin-top:28px;color:var(--muted);font-size:.83rem}@media(max-width:760px){.grid{grid-template-columns:1fr}main{padding:22px 14px 48px}.panel{padding:17px}}
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+<div class="brand">SUPERPOWER AI / FIELD TOOL 001</div>
+<h1>Make your next AI move<br><span>deliberate.</span></h1>
+<p class="lede">Turn a fuzzy business problem into a clear implementation brief—with a goal, workflow, constraints, proof plan, and next step.</p>
+<span class="pill">Browser-only prototype · No API key required</span>
+</header>
+<div class="grid">
+<section class="panel">
+<h2>Define the mission</h2>
+<p class="sub">Specific inputs create a more useful brief. Avoid secrets and confidential data.</p>
+<form id="builder">
+<div class="field"><label for="problem">What problem are you trying to solve? *</label><textarea id="problem" required placeholder="Example: enquiries arrive through several channels and follow-ups get missed."></textarea></div>
+<div class="field"><label for="user">Who experiences this problem?</label><input id="user" placeholder="Example: a small marketing agency sales team"></div>
+<div class="field"><label for="outcome">What should improve?</label><input id="outcome" placeholder="Example: every lead has an owner and a dated next action"></div>
+<div class="field"><label for="tools">Available tools or systems</label><input id="tools" placeholder="Example: Google Sheets, Gmail, Make"></div>
+<div class="field"><label for="constraints">Constraints and risks</label><textarea id="constraints" placeholder="Example: no paid API, human approval before sending, protect personal data."></textarea></div>
+<div class="field"><label for="proof">How will you know it works?</label><input id="proof" placeholder="Example: 10 fictional leads pass through the workflow without missing a next action"></div>
+<button class="btn" type="submit">Build my blueprint ↗</button>
+</form>
+<div class="note">This tool structures your answers into a brief. It does not itself generate AI output, execute workflows, or verify business claims.</div>
+</section>
+<section class="panel">
+<h2>Your implementation brief</h2>
+<p class="sub">Review the result before sharing it with an AI assistant or developer.</p>
+<div id="output" class="output" aria-live="polite">Your blueprint will appear here. Start with the problem you want to solve.</div>
+<div class="actions"><button class="btn" id="copy" type="button">Copy brief</button><button class="btn secondary" id="sample" type="button">Load example</button><button class="btn secondary" id="clear" type="button">Clear</button></div>
+<div id="status" class="status" role="status"></div>
+</section>
+</div>
+<footer>SUPERPOWER AI · Practical tools, reproducible proof, honest claims. This page runs locally in your browser and makes no network requests.</footer>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+function buildBrief(){
+ const get=id=>$(id).value.trim();
+ const problem=get('problem'), user=get('user')||'Not specified', outcome=get('outcome')||'Define a measurable outcome before implementation', tools=get('tools')||'Not specified; recommend the simplest viable stack', constraints=get('constraints')||'Identify privacy, security, cost, reliability, and human-approval requirements before building', proof=get('proof')||'Define a repeatable test with sample data and observable pass/fail criteria';
+ return [
+ '# AI IMPLEMENTATION BRIEF',
+ '',
+ '## 1. Mission',
+ problem,
+ '',
+ '## 2. Intended user',
+ user,
+ '',
+ '## 3. Desired outcome',
+ outcome,
+ '',
+ '## 4. Available tools',
+ tools,
+ '',
+ '## 5. Constraints and risks',
+ constraints,
+ '',
+ '## 6. Proposed workflow',
+ '1. Clarify assumptions and missing requirements.',
+ '2. Map the current process and identify the smallest useful intervention.',
+ '3. Design a minimal prototype with explicit inputs, outputs, and failure handling.',
+ '4. Keep external actions approval-based until permissions and safeguards are validated.',
+ '5. Test with fictional or sanitized sample data.',
+ '',
+ '## 7. Proof plan',
+ proof,
+ 'Record the test setup, expected result, actual result, and known limitations. Do not claim success until the test passes.',
+ '',
+ '## 8. Deliverables',
+ '- Working minimal prototype',
+ '- Setup and usage instructions',
+ '- Tests or a reproducible manual QA checklist',
+ '- Privacy/security notes and known limitations',
+ '- One recommended next iteration based on evidence',
+ '',
+ '## 9. Instructions for the builder',
+ 'First restate assumptions and ask only essential questions. Then propose the smallest testable implementation. Do not invent integrations, performance results, users, or business outcomes. Separate implemented features from roadmap items.',
+ '',
+ 'Generated locally by PowerOfAI Blueprint Studio. This is a structured brief, not a verified technical design.'
+ ].join('\n');
+}
+$('builder').addEventListener('submit',e=>{e.preventDefault();$('output').textContent=buildBrief();$('status').textContent='Blueprint built locally. Review it before use.'});
+$('copy').addEventListener('click',async()=>{const text=$('output').textContent;if(!text||text.startsWith('Your blueprint')){$('status').textContent='Build a blueprint first.';return}try{await navigator.clipboard.writeText(text);$('status').textContent='Copied to clipboard.'}catch{$('status').textContent='Clipboard access was blocked. Select and copy the brief manually.'}});
+$('sample').addEventListener('click',()=>{ $('problem').value='Enquiries arrive through email, forms, and calls, and the team sometimes forgets the next follow-up.';$('user').value='Small service-business owner or sales coordinator';$('outcome').value='Every enquiry has a status, owner, next action, and due date';$('tools').value='Browser-based tracker first; evaluate Google Sheets or Make only after validating the workflow';$('constraints').value='Start with fictional data. No automatic customer messaging. Keep records local until a privacy and access model is approved.';$('proof').value='Create 10 fictional leads; verify search, status filtering, due-date filtering, and CSV export; document any failures.';$('output').textContent=buildBrief();$('status').textContent='Example loaded. Edit the fields to fit your use case.'});
+$('clear').addEventListener('click',()=>{$('builder').reset();$('output').textContent='Your blueprint will appear here. Start with the problem you want to solve.';$('status').textContent='Cleared.'});
+</script>
+</body>
+</html>
