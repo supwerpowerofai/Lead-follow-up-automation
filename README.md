@@ -1,76 +1,88 @@
 # Lead Follow-Up Tracker
 
-A lightweight, browser-only lead tracker for small service businesses. Record enquiries, set a next action, and review due or overdue follow-ups without installing dependencies or sending customer messages automatically.
+A privacy-first, dependency-free lead follow-up tracker for small service businesses. Capture enquiries, assign ownership, record the next action, and review due or overdue follow-ups from a single browser-based interface.
 
+**Maintainer:** [@supwerpowerofai](https://github.com/supwerpowerofai)  
 **Project:** OPERONIX AI  
-**Status:** Early prototype — use fictional data until you have tested the app and reviewed your privacy requirements.
+**Status:** Prototype / portfolio project — not yet production-certified  
+**License:** MIT
 
-## What it does today
+[Open the repository](https://github.com/supwerpowerofai/Lead-follow-up-automation) · [Review the roadmap](ROADMAP.md) · [Read the workflow guide](docs/workflow.md)
 
-- Add, edit, and delete lead records.
-- Track lead status, enquiry channel, service, owner, date received, last contact, next follow-up, and notes.
-- Search leads and filter by status, due today, overdue, or missing next action.
-- See open, due-today, overdue, and booked counts.
-- Import and export CSV files.
-- Keep records in the current browser profile using local storage.
+## Why this exists
 
-## What it does not do
+Small teams can lose track of enquiries when lead details live across inboxes, calls, spreadsheets, and chat apps. This project demonstrates a simple operational baseline: every enquiry should have a status, an owner where appropriate, and a clear next action.
 
-- No server, accounts, cloud sync, or multi-device access.
-- No automatic WhatsApp, SMS, email, or CRM integrations.
-- No AI-generated or automatically sent customer messages.
-- No guarantee that a lead converts or that a follow-up improves revenue.
+It is intentionally conservative: it does not message customers automatically, claim to increase conversion, or transmit records to a server.
+
+## Current capabilities
+
+- Create, edit, and delete lead records.
+- Track enquiry channel, requested service, status, owner, dates, and brief notes.
+- Search records and filter by status, due today, overdue, or missing next action.
+- View open, due-today, overdue, and booked counts.
+- Import and export CSV, with header aliases and duplicate-ID handling.
+- Load fictional demonstration records.
+- Store data locally in the current browser profile.
+- Run Node.js smoke tests through GitHub Actions.
 
 ## Quick start
 
-1. Open [index.html](index.html) in a current desktop or mobile browser.
-2. Select **Load demo data** to explore with fictional records, or add a test lead manually.
-3. To import the included examples, select **Import CSV** and choose [sample-leads.csv](sample-leads.csv). Review the import confirmation before proceeding.
-4. Add a next follow-up date to open leads and use the due-date filters for a daily review.
-5. Select **Export CSV** to save a backup before clearing browser data or changing devices.
+No package manager or build step is required.
 
-No package manager, build step, API key, or third-party service is required. The app has no network backend. Data is stored only in that browser profile and is not synced. Exported CSV files are unencrypted; store them carefully.
+1. Clone or download this repository.
+2. Open `index.html` in a current browser.
+3. Choose **Load demo data** to explore fictional records.
+4. Try search, status and due-date filters, then export a CSV backup.
+5. Test import using `sample-leads.csv`.
 
-## CSV format
-
-The importer accepts common field names such as `name` or `customer_name`, `channel` or `contact_channel`, `service` or `service_requested`, `nextDate` or `next_follow_up_date`, and `notes` or `outcome_notes`. Dates should use `YYYY-MM-DD`. The sample file uses fictional rows.
-
-If a CSV contains malformed quoting, missing names, or invalid dates, the app should display an import error instead of importing those rows.
-
-## Suggested daily workflow
-
-1. Capture each genuine enquiry once and assign an owner.
-2. Confirm the status and next action.
-3. Review due-today and overdue leads at the start of the day.
-4. Contact only people who have enquired or otherwise consented, using the business-approved channel and message.
-5. Record the outcome and next action; stop if someone opts out.
-6. Close a lead only when the outcome is known.
-
-See [the workflow guide](docs/workflow.md), [follow-up templates](docs/follow-up-templates.md), and [pilot validation checklist](docs/test-cases.md).
-
-## Development and checks
-
-The app is a single static HTML file. Automated smoke tests use Node.js 20 or newer:
+For development checks, use Node.js 20 or newer:
 
 ```bash
 node --test tests/smoke.test.mjs
 ```
 
-GitHub Actions runs these checks on pushes and pull requests. A passing automated smoke test does **not** replace manual browser testing. The prototype still needs a real-browser check of import/export, local storage, keyboard use, and mobile layouts before being relied on for live operations.
+Automated smoke tests are useful, but they are not a substitute for manual testing in current desktop and mobile browsers.
 
-## Project status and roadmap
+## Data and privacy model
 
-See [ROADMAP.md](ROADMAP.md) for intended priorities, [docs/launch-checklist.md](docs/launch-checklist.md) for the release gate, and [docs/launch-post.md](docs/launch-post.md) for an announcement draft. Planned items are not promises or completed features.
+- Records stay in the browser's local storage; there is no application server or cloud sync.
+- Data does not move between devices or browser profiles.
+- Anyone with access to the same browser profile may be able to access the records.
+- CSV exports are not encrypted. Store them securely and delete them when no longer needed.
+- Use fictional data for demos and tests. Obtain permission before entering real customer data.
+- Do not store passwords, payment details, sensitive personal information, or secrets in lead notes.
 
-## Privacy and security
+See [Privacy and Security Notes](docs/privacy-security.md) and [Manual QA Checklist](docs/manual-qa-checklist.md).
 
-- Do not commit real customer records, credentials, API keys, or tokens.
-- Get permission before handling business or customer data.
-- Avoid sensitive information in notes.
-- Remember that anyone with access to the same browser profile may be able to access locally stored records.
-- Respect consent, opt-outs, business hours, and platform rules.
-- Review [SECURITY.md](SECURITY.md) before reporting a security concern.
+## What this project does not do
 
-## Contributing and license
+This prototype does not include user accounts, role-based access, a backend database, CRM integrations, AI message generation, automated WhatsApp/SMS/email, or delivery guarantees. Those are separate future projects, not existing features.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). This project is released under the [MIT License](LICENSE).
+## Architecture
+
+The application is a single static HTML file containing its interface and client-side logic. Browser local storage is the persistence layer. CSV import/export is the data exchange mechanism. The test suite checks JavaScript syntax, required UI elements, CSV parsing and validation, sample-data compatibility, duplicate handling, export metadata, and storage failure messaging.
+
+See [Architecture Notes](docs/architecture.md) for constraints and future production requirements.
+
+## Roadmap
+
+The roadmap separates implemented behaviour from future work. Planned features should not be interpreted as shipped or tested functionality.
+
+- [x] Basic lead tracking and status filters
+- [x] Local browser persistence
+- [x] CSV import/export
+- [x] Fictional sample data
+- [x] Automated smoke-test workflow
+- [ ] Manual browser QA across desktop and mobile
+- [ ] Accessibility audit with keyboard and screen-reader checks
+- [ ] User research with a small service-business pilot
+- [ ] Production architecture review before adding accounts or cloud storage
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md), [Code of Conduct](CODE_OF_CONDUCT.md), and [Security Policy](SECURITY.md). Keep changes focused, testable, accessible, and honest about limitations.
+
+## Disclaimer
+
+This is an early-stage demonstration and portfolio project. Do not use it as the sole system of record for critical customer operations until it has been reviewed, tested, and adapted to the relevant business and privacy requirements.
