@@ -2,12 +2,18 @@
 
 A privacy-first, dependency-free lead follow-up tracker for small service businesses. Capture enquiries, assign ownership, record the next action, and review due or overdue follow-ups from a single browser-based interface.
 
+<p align="left">
+  <a href="https://github.com/supwerpowerofai/Lead-follow-up-automation/actions/workflows/test.yml"><img alt="Automated tests" src="https://github.com/supwerpowerofai/Lead-follow-up-automation/actions/workflows/test.yml/badge.svg"></a>
+  <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg">
+  <img alt="Dependencies: none" src="https://img.shields.io/badge/dependencies-none-brightgreen.svg">
+  <img alt="Status: prototype" src="https://img.shields.io/badge/status-prototype-orange.svg">
+</p>
+
 **Maintainer:** [@supwerpowerofai](https://github.com/supwerpowerofai)  
 **Project:** OPERONIX AI  
-**Status:** Prototype / portfolio project — not yet production-certified  
-**License:** MIT
+**Maturity:** Prototype / portfolio project — not production-certified
 
-[Open the repository](https://github.com/supwerpowerofai/Lead-follow-up-automation) · [Review the roadmap](ROADMAP.md) · [Read the workflow guide](docs/workflow.md)
+[Open the repository](https://github.com/supwerpowerofai/Lead-follow-up-automation) · [Roadmap](ROADMAP.md) · [Workflow guide](docs/workflow.md) · [Architecture](docs/architecture.md) · [Test cases](docs/test-cases.md)
 
 ## Why this exists
 
@@ -42,7 +48,7 @@ For development checks, use Node.js 20 or newer:
 node --test tests/smoke.test.mjs
 ```
 
-Automated smoke tests are useful, but they are not a substitute for manual testing in current desktop and mobile browsers.
+Automated smoke tests are useful, but they are not a substitute for manual testing in current desktop and mobile browsers. See the [manual QA checklist](docs/manual-qa-checklist.md).
 
 ## Data and privacy model
 
@@ -53,7 +59,7 @@ Automated smoke tests are useful, but they are not a substitute for manual testi
 - Use fictional data for demos and tests. Obtain permission before entering real customer data.
 - Do not store passwords, payment details, sensitive personal information, or secrets in lead notes.
 
-See [Privacy and Security Notes](docs/privacy-security.md) and [Manual QA Checklist](docs/manual-qa-checklist.md).
+See [Privacy and Security Notes](docs/privacy-security.md) and [Security Policy](SECURITY.md).
 
 ## What this project does not do
 
@@ -79,9 +85,19 @@ The roadmap separates implemented behaviour from future work. Planned features s
 - [ ] User research with a small service-business pilot
 - [ ] Production architecture review before adding accounts or cloud storage
 
+See [ROADMAP.md](ROADMAP.md) for prioritised milestones.
+
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md), [Code of Conduct](CODE_OF_CONDUCT.md), and [Security Policy](SECURITY.md). Keep changes focused, testable, accessible, and honest about limitations.
+Contributions should be focused, reproducible, and privacy-aware. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. The repository also includes a [Code of Conduct](CODE_OF_CONDUCT.md) and [Security Policy](SECURITY.md).
+
+## Engineering principles
+
+- **Evidence over claims:** report only tests and capabilities that have actually been verified.
+- **Privacy by default:** no analytics, remote calls, or cloud storage in the current prototype.
+- **Small, reviewable changes:** keep changes understandable and easy to test.
+- **Accessible by design:** preserve clear labels, keyboard usability, and responsive layouts.
+- **Explicit limitations:** distinguish shipped functionality from planned work.
 
 ## Disclaimer
 
