@@ -18,9 +18,12 @@ Do not delete or rename existing files as part of the split. Copy first, verify 
 - [x] Agent Nexus Python unit-test workflow passed: https://github.com/supwerpowerofai/Lead-follow-up-automation/actions/runs/40753451922
 - [x] Brand, go-to-market, content, and sales documents were fetched back from GitHub after publication.
 
-### Fix applied
+### Fixes applied
 
-The lead tracker previously relied on `toLocaleDateString('en-CA')` to produce an ISO-style date string. The app now constructs a local YYYY-MM-DD date explicitly, avoiding browser/locale-dependent formatting for due-date comparisons.
+- The lead tracker previously relied on `toLocaleDateString('en-CA')` to produce an ISO-style date string. The app now constructs a local YYYY-MM-DD date explicitly, avoiding browser/locale-dependent formatting for due-date comparisons.
+- When browser storage fails, the tracker now says the record is only in memory and advises exporting a backup, rather than always reporting that it was saved persistently.
+
+The latest regression run covering the storage-failure message passed: https://github.com/supwerpowerofai/Lead-follow-up-automation/actions/runs/40755494648.
 
 ## Current capability boundaries
 
